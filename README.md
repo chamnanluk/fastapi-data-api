@@ -88,7 +88,29 @@ Create a database named `salesdb`, then run:
 psql -U postgres -d salesdb -f scripts/init_postgres.sql
 ```
 
-If `psql` is not in your PATH, open pgAdmin or your SQL tool and run the SQL file manually.
+If `psql` is not in your PATH, you have a few options:
+
+- Open pgAdmin or your preferred SQL tool and run `scripts/init_postgres.sql` manually.
+- Run `psql.exe` with its full path on Windows, for example:
+
+```powershell
+& "C:\Program Files\PostgreSQL\17\bin\psql.exe" -U postgres -d salesdb -f scripts/init_postgres.sql
+```
+
+If `psql` waits for a password in PowerShell, set `PGPASSWORD` first so the command can run non-interactively:
+
+```powershell
+$env:PGPASSWORD="your_postgres_password"
+& "C:\Program Files\PostgreSQL\17\bin\psql.exe" -U postgres -d salesdb -f scripts/init_postgres.sql
+```
+
+You can verify whether `psql` is available with:
+
+```powershell
+Get-Command psql
+```
+
+Note: the current seed script uses `CREATE TABLE IF NOT EXISTS`, so rerunning it is safe for table creation, but it will insert the sample rows again.
 
 ## 5. Prepare DuckDB
 
